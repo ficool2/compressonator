@@ -2929,7 +2929,7 @@ CMP_STATIC CGU_FLOAT cpu_CompRGBBlock32(CGU_UINT32 block_32[16],
             // For each unique value we compute the number of it appearences.
             //qsort((void *)dwBlk, (size_t)dwColors, sizeof(CGU_UINT32), QSortIntCmp);
 #ifndef ASPM_GPU  // this is here for reminder when code moves to GPU
-        std::sort(dwBlk, dwBlk + 15);
+        std::sort(dwBlk, dwBlk + dwColors);
 #else
         {
             CGU_UINT32 j;
