@@ -2239,14 +2239,14 @@ CGU_FLOAT CalcShapeError(BC6H_Encode_local* BC6H_data, CGU_FLOAT fEndPoints[MAX_
         }
 
         // initialize bestError to the difference for first data
-        bestError = abs(BC6H_data->din[i][0] - BC6H_data->Paletef[subset][0].x) + abs(BC6H_data->din[i][1] - BC6H_data->Paletef[subset][0].y) +
-                    abs(BC6H_data->din[i][2] - BC6H_data->Paletef[subset][0].z);
+        bestError = fabsf(BC6H_data->din[i][0] - BC6H_data->Paletef[subset][0].x) + fabsf(BC6H_data->din[i][1] - BC6H_data->Paletef[subset][0].y) +
+                    fabsf(BC6H_data->din[i][2] - BC6H_data->Paletef[subset][0].z);
 
         // loop through the rest of the data until find the best error
         for (CGU_INT j = 1; j < maxPallet && bestError > 0; j++)
         {
-            error = abs(BC6H_data->din[i][0] - BC6H_data->Paletef[subset][j].x) + abs(BC6H_data->din[i][1] - BC6H_data->Paletef[subset][j].y) +
-                    abs(BC6H_data->din[i][2] - BC6H_data->Paletef[subset][j].z);
+            error = fabsf(BC6H_data->din[i][0] - BC6H_data->Paletef[subset][j].x) + fabsf(BC6H_data->din[i][1] - BC6H_data->Paletef[subset][j].y) +
+                    fabsf(BC6H_data->din[i][2] - BC6H_data->Paletef[subset][j].z);
 
             if (error <= bestError)
                 bestError = error;
@@ -2893,13 +2893,11 @@ CGU_FLOAT CalcOneRegionEndPtsError(BC6H_Encode_local* BC6H_data,
 
     for (CGU_INT i = 0; i < MAX_SUBSET_SIZE; i++)
     {
-        for (CGU_INT m = 0; m < MAX_END_POINTS; m++)
+        for (CGU_INT n = 0; n < NCHANNELS; n++)
         {
-            for (CGU_INT n = 0; n < NCHANNELS; n++)
-            {
-                CGU_FLOAT calencpts = fEndPoints[0][m][n] + (abs(fEndPoints[0][m][n] - fEndPoints[0][m][n]) * (shape_indices[0][i] / 15));
-                error += abs(BC6H_data->din[i][n] - calencpts);
-            }
+            CGU_FLOAT calencpts =
+                fEndPoints[0][0][n] + ((fEndPoints[0][1][n] - fEndPoints[0][0][n]) * (shape_indices[0][i] / 15.0f));
+            error += fabsf(BC6H_data->din[i][n] - calencpts);
         }
     }
 
@@ -2937,8 +2935,8 @@ void ReIndexShapef(BC6H_Encode_local* BC6H_data, CGU_INT shape_indices[MAX_SUBSE
             for (CGU_INT j = 0; j < MaxPallet; j++)
             {
                 // Calculate error from original
-                error = abs(BC6H_data->din[i][0] - BC6H_data->Paletef[1][j].x) + abs(BC6H_data->din[i][1] - BC6H_data->Paletef[1][j].y) +
-                        abs(BC6H_data->din[i][2] - BC6H_data->Paletef[1][j].z);
+                error = fabsf(BC6H_data->din[i][0] - BC6H_data->Paletef[1][j].x) + fabsf(BC6H_data->din[i][1] - BC6H_data->Paletef[1][j].y) +
+                        fabsf(BC6H_data->din[i][2] - BC6H_data->Paletef[1][j].z);
                 if (error < bestError)
                 {
                     bestError = error;
@@ -2958,8 +2956,8 @@ void ReIndexShapef(BC6H_Encode_local* BC6H_data, CGU_INT shape_indices[MAX_SUBSE
             for (CGU_INT j = 0; j < MaxPallet; j++)
             {
                 // Calculate error from original
-                error = abs(BC6H_data->din[i][0] - BC6H_data->Paletef[0][j].x) + abs(BC6H_data->din[i][1] - BC6H_data->Paletef[0][j].y) +
-                        abs(BC6H_data->din[i][2] - BC6H_data->Paletef[0][j].z);
+                error = fabsf(BC6H_data->din[i][0] - BC6H_data->Paletef[0][j].x) + fabsf(BC6H_data->din[i][1] - BC6H_data->Paletef[0][j].y) +
+                        fabsf(BC6H_data->din[i][2] - BC6H_data->Paletef[0][j].z);
                 if (error < bestError)
                 {
                     bestError = error;

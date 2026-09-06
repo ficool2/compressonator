@@ -1002,7 +1002,7 @@ CMP_STATIC void cmp_RefineMinMaxAs16BitLeastSquares(CMP_IN CGU_Vec3f            
 
     CGU_FLOAT det = alphaSqSum * betaSqSum - alphaBetaSum * alphaBetaSum;
 
-    if (abs(det) > 0.00001f)
+    if (fabsf(det) > 0.00001f)
     {
         CGU_FLOAT detRcp = cmp_rcp(det);
         blockMin         = cmp_clampVec3f((alphaTexelSum * betaSqSum - betaTexelSum * alphaBetaSum) * detRcp, 0.0f, CMP_MAX_16BITFLOAT);
@@ -1020,9 +1020,9 @@ CMP_STATIC CGU_Vec3f cmp_fabsVec3f(CGU_Vec3f value)
     return abs(value);
 #else
     CGU_Vec3f res;
-    res.x = abs(value.x);
-    res.y = abs(value.y);
-    res.z = abs(value.z);
+    res.x = fabsf(value.x);
+    res.y = fabsf(value.y);
+    res.z = fabsf(value.z);
     return res;
 #endif
 }

@@ -2476,7 +2476,7 @@ CMP_STATIC void cpu_FindAxis(CMP_OUT CGU_FLOAT              BlkSh[BLOCK_SIZE_4X4
         for (j = 0; j < nDimensions; j++)
         {
             CGU_FLOAT Det = RGB2[j] * RGB2[(j + 1) % 3] - Crrl[j] * Crrl[j];
-            Cs[j]         = abs(Crrl[j] / sqrt(RGB2[j] * RGB2[(j + 1) % 3]));
+            Cs[j]         = fabsf(Crrl[j] / sqrt(RGB2[j] * RGB2[(j + 1) % 3]));
             if (maxDet < Det)
             {
                 maxDet = Det;
