@@ -33,7 +33,9 @@
 
 #ifndef ASPM_GPU
 #include "cpu_extensions.h"
+#ifndef CMP_NO_SIMD_EXTENSIONS
 #include "core_simd.h"
+#endif
 #endif
 
 //-----------------------------------------------------------------------
@@ -96,6 +98,12 @@ CMP_STATIC CGU_FLOAT (*cpu_bc1ComputeBestEndpoints)(CGU_FLOAT*, CGU_FLOAT*, CGU_
 // NOTE: The requested extension will only be enabled if it is supported by the current CPU.
 CMP_STATIC bool bc1ToggleSIMD(CGU_INT newExtension)
 {
+#ifdef CMP_NO_SIMD_EXTENSIONS
+    // the SSE/AVX variations aren't built, everything runs the plain C path
+    cpu_bc1ComputeBestEndpoints = _cpu_bc1ComputeBestEndpoints;
+    g_bc1FunctionPointersSet    = true;
+    return true;
+#else
     CGU_BOOL useAVX512 = true;
     CGU_BOOL useAVX2   = true;
     CGU_BOOL useSSE42  = true;
@@ -135,6 +143,7 @@ CMP_STATIC bool bc1ToggleSIMD(CGU_INT newExtension)
         result = false;
 
     return result;
+#endif
 }
 #endif
 

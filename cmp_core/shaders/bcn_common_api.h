@@ -257,7 +257,8 @@ CMP_STATIC CGU_FLOAT cmp_maxf(CMP_IN CGU_FLOAT a, CMP_IN CGU_FLOAT b)
 
 CMP_STATIC CGU_FLOAT cmp_floor(CMP_IN CGU_FLOAT value)
 {
-#if defined(_M_X64) || defined(_M_IX86) || defined(x86_64) || defined(i386)
+// _mm_floor_ss is SSE4.1, so it's skipped when the build has to stay at SSE2
+#if !defined(CMP_NO_SIMD_EXTENSIONS) && (defined(_M_X64) || defined(_M_IX86) || defined(x86_64) || defined(i386))
     __m128 vectorValue = _mm_set_ss(value);
     return _mm_cvtss_f32(_mm_floor_ss(vectorValue, vectorValue));
 #elif defined(arm) || defined(_M_ARM) || defined(aarch64)
