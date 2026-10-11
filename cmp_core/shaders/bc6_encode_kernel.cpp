@@ -641,7 +641,7 @@ __constant CGU_UINT8 BC6_PARTITIONS[MAX_BC6H_PARTITIONS][MAX_SUBSET_SIZE] = {
      0},
 };
 
-CGU_DWORD get_partition_subset(CGU_INT subset, CGU_INT partI, CGU_INT index)
+static CGU_DWORD get_partition_subset(CGU_INT subset, CGU_INT partI, CGU_INT index)
 {
     if (subset)
         return BC6_PARTITIONS[partI][index];
